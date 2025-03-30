@@ -106,9 +106,6 @@ CapsLock::{
     Send("+{Down}")
 }
 
-^+Esc::{   
-    ExitApp
-}
 
 
 
