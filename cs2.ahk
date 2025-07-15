@@ -2,6 +2,9 @@
 #Persistent
 #SingleInstance force
 
+; necesitaras de nircmd para el funcionamiento de cada sccript , ademas , el nombre donde guardes
+; la carpeta de "nircmd.exe" debe coincidir con el del script , por ejemplo : "c:\nircmd\" nombre igual . 
+
 toggle := false
 
 F8::
