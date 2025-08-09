@@ -39,3 +39,4 @@ MonitorDesdePunto(X, Y) {
     }
     return 1
 }
+

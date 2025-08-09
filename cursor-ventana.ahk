@@ -1,3 +1,6 @@
+; v1 
+; asfddaf
+
 ; Establecer el modo de coordenadas en pantalla para evitar discrepancias
 CoordMode, Mouse, Screen
 CoordMode, ToolTip, Screen
@@ -42,6 +45,5 @@ CheckActiveWindow:
         }
     }
 return
-
 
 

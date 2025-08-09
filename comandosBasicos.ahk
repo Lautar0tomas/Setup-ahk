@@ -1,8 +1,26 @@
 #Requires AutoHotkey v2.0
+
+
 ;   ! → Alt
 ;   ^ → Ctrl
 ;   + → Shift
 ;   # → Win
+                    ;ATAJOS QUE NO SON PARTE DE LOS PERSONALES(y otros que si pero menos intuitivos) PERO QUE SIRVEN DEMASIADO.
+;ctrl + L -> para modificar la url del navegador 
+;ctrl + / -> para la busqueda del youtube 
+;ctrl + f -> para la busqueda de palabras en el navegador
+;ctrl + left -> para ir para atras y ctrl + right para adelante
+
+
+#SingleInstance Force
+
+; Atajo condicional para Edge
+#HotIf WinActive("ahk_exe msedge.exe") ; funciona unicamente si se habre el "edge" 
+!t:: {  ; Alt+T solo en Edge
+    Send "^+k"  ; imita a  "Ctrl+Shift+K"
+    return
+}
+#HotIf  ; Restablece el contexto para otros hotkeys
 
 
 #+w::{
@@ -65,13 +83,13 @@
     Send("{Home}")
 }
 
-+End::{
-    Send("{WheelDown}")
-}
+; +End::{
+;     Send("{WheelDown}")
+; }
 
-+Home::{
-    Send("{WheelUp}")
-}
+; +Home::{
+;     Send("{WheelUp}")
+; }
 
 !n::{
     Send("ñ")
@@ -107,8 +125,74 @@ CapsLock::{
 }
 
 
+#SingleInstance Force
+SendMode "Input"
+
+; Configuración ajustable
+scrollAmount := 2           ; Cantidad de líneas a desplazar con teclado
+wheelDebounceTime := 100    ; Tiempo mínimo entre clicks de rueda (ms)
+
+; Variables para control de la rueda
+lastMButtonTime := 0
+mButtonBlocked := false
+
+; Filtro para el botón central del ratón (rueda)
+~MButton:: {
+    global lastMButtonTime, mButtonBlocked, wheelDebounceTime
+    
+    if (mButtonBlocked) {
+        return  ; Ignorar clicks bloqueados
+    }
+    
+    currentTime := A_TickCount
+    timeSinceLast := currentTime - lastMButtonTime
+    
+    if (timeSinceLast < wheelDebounceTime) {
+        mButtonBlocked := true
+        SetTimer ResetMButtonBlock, -wheelDebounceTime
+        return
+    }
+    
+    lastMButtonTime := currentTime
+    ; El ~ permite que el click normal se procese
+}
+
+ResetMButtonBlock() {
+    global mButtonBlocked := false
+}
+
+; Desplazamiento con teclado - NO AFECTADO POR EL FILTRO
++Home:: {
+    global scrollAmount
+    Send "{WheelUp " scrollAmount "}"  ; Envía múltiples eventos a la vez
+}
+
++End:: {
+    global scrollAmount
+    Send "{WheelDown " scrollAmount "}"  ; Envía múltiples eventos a la vez
+}
 
 
+; #SingleInstance Force
+; SendMode "Input"
 
+; ; Configuración ajustable
+; scrollAmount := 1 ; Cantidad de líneas a desplazar (ajusta según necesidad)
 
+; ; Desplazamiento hacia arriba (Shift+Home)
+; +Home:: {
+;     global scrollAmount
+;     Loop scrollAmount {
+;         Send "{WheelUp}"
+;         Sleep 5  ; Pequeña pausa para mejor compatibilidad , Reduce para más velocidad o aumenta para más suavidad
+;     }
+; }
 
+; ; Desplazamiento hacia abajo (Shift+End)
+; +End:: {
+;     global scrollAmount
+;     Loop scrollAmount {
+;         Send "{WheelDown}"
+;         Sleep 5  ; Pequeña pausa para mejor compatibilidad , Reduce para más velocidad o aumenta para más suavidad
+;     }
+; }
