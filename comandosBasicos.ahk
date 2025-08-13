@@ -10,7 +10,7 @@
 ;ctrl + / -> para la busqueda del youtube 
 ;ctrl + f -> para la busqueda de palabras en el navegador
 ;ctrl + left -> para ir para atras y ctrl + right para adelante
-
+;en chatgpt , un atajo es escribir la barra "/" y luego lo que quieres que haga como "busca" o "piensa" etc ..  
 
 #SingleInstance Force
 
