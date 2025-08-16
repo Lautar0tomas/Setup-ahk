@@ -11,6 +11,9 @@
 ;ctrl + f -> para la busqueda de palabras en el navegador
 ;ctrl + left -> para ir para atras y ctrl + right para adelante
 ;en chatgpt , un atajo es escribir la barra "/" y luego lo que quieres que haga como "busca" o "piensa" etc ..  
+;ctrl + shift + repag "o" avpag mueve para arriba o para abajo las ventanas del edge y en general . 
+
+
 
 #SingleInstance Force
 
@@ -24,11 +27,11 @@
 
 
 #+w::{
-    Send("#^{Up}")
+    Send("#{Up}")
 }
 
 #+x::{
-    Send("#^{Down}")
+    Send("#{Down}")
 }
 
 ^!f::{
