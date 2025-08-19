@@ -12,7 +12,7 @@
 ;ctrl + left -> para ir para atras y ctrl + right para adelante
 ;en chatgpt , un atajo es escribir la barra "/" y luego lo que quieres que haga como "busca" o "piensa" etc ..  
 ;ctrl + shift + repag "o" avpag mueve para arriba o para abajo las ventanas del edge y en general . 
-
+;wind + e  -> abre una nueva biblioteca . 
 
 
 #SingleInstance Force
