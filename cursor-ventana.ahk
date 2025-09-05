@@ -47,3 +47,19 @@ CheckActiveWindow:
 return
 
 
+Alt::
+    if ( GetKeyState("Ctrl","P") || GetKeyState("Shift","P") )
+    {
+        Send {Alt Down} 
+        KeyWait, Alt
+        Send {Alt Up}
+        return
+    }
+    else
+    {
+        KeyWait, Alt
+        if (A_PriorKey = "Alt")
+            Send {Blind}{vkFF}
+        return
+    }
+return

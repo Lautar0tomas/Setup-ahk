@@ -10,9 +10,9 @@ toggle := false
 F8::
 toggle := !toggle
 if toggle {
-    Run, C:\nircmd\nircmd.exe muteappvolume cs2.exe 1
+    Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume cs2.exe 1
 } else {
-    Run, C:\nircmd\nircmd.exe muteappvolume cs2.exe 0
+    Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume cs2.exe 0
 }
 return     
 

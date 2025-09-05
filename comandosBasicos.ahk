@@ -13,9 +13,22 @@
 ;en chatgpt , un atajo es escribir la barra "/" y luego lo que quieres que haga como "busca" o "piensa" etc ..  
 ;ctrl + shift + repag "o" avpag mueve para arriba o para abajo las ventanas del edge y en general . 
 ;wind + e  -> abre una nueva biblioteca . 
+;wind + v -> gestor de portapapeles 
+;ctrl + wind + v -> cambiar dispositivo de salida de audio 
+;alt + fin -> cambiar pestañas de ventana (con la extension de m.edge)
+;ctrl + shift + t -> abre la anterior pestaña cerrada
+;alt + t -> duplica la pestaña en el mismo grupo
 
+; Remapea Ctrl+D a Shift+F10 solo cuando la ventana activa pertenece a msedge.exe (Edge)
 
-#SingleInstance Force
+; Hotkey Ctrl+D solo en Edge
+#HotIf WinActive("ahk_exe msedge.exe")
+     || WinActive("ahk_exe chrome.exe") 
+     || WinActive("ahk_exe firefox.exe") 
+     || WinActive("ahk_exe brave.exe")
+^d::Send("+{F10}")
+#HotIf
+
 
 ; Atajo condicional para Edge
 #HotIf WinActive("ahk_exe msedge.exe") ; funciona unicamente si se habre el "edge" 
@@ -25,6 +38,13 @@
 }
 #HotIf  ; Restablece el contexto para otros hotkeys
 
+^!y:: {                       ; Ctrl+Alt+Y -> hotkey para super productivity (primero seleccionar tarea)
+    Send("{Ctrl down}{Shift down}x{Shift up}{Ctrl up}") ; Ctrl+Shift+X
+    Sleep(100)
+    Send("z")
+    Sleep(100)                                         ; y
+    Send("{Ctrl down}{Shift down}x{Shift up}{Ctrl up}") ; Ctrl+Shift+X
+}
 
 #+w::{
     Send("#{Up}")
@@ -94,9 +114,11 @@
 ;     Send("{WheelUp}")
 ; }
 
-!n::{
-    Send("ñ")
+!n:: {
+    ; acción 1
+    Send "{U+00F1}"
 }
+
 
 CapsLock::{
     return
@@ -128,11 +150,14 @@ CapsLock::{
 }
 
 
+
+
+
 #SingleInstance Force
 SendMode "Input"
 
 ; Configuración ajustable
-scrollAmount := 2           ; Cantidad de líneas a desplazar con teclado
+scrollAmount := 1         ; Cantidad de líneas a desplazar con teclado
 wheelDebounceTime := 100    ; Tiempo mínimo entre clicks de rueda (ms)
 
 ; Variables para control de la rueda
