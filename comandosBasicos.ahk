@@ -12,12 +12,16 @@
 ;ctrl + left -> para ir para atras y ctrl + right para adelante
 ;en chatgpt , un atajo es escribir la barra "/" y luego lo que quieres que haga como "busca" o "piensa" etc ..  
 ;ctrl + shift + repag "o" avpag mueve para arriba o para abajo las ventanas del edge y en general . 
+;alt + ctrl + y / n -> mueve texto arriba o abajo
 ;wind + e  -> abre una nueva biblioteca . 
 ;wind + v -> gestor de portapapeles 
+;win + r -> shell:startup (capeta de inicio del usuario) 
 ;ctrl + wind + v -> cambiar dispositivo de salida de audio 
 ;alt + fin -> cambiar pestañas de ventana (con la extension de m.edge)
 ;ctrl + shift + t -> abre la anterior pestaña cerrada
 ;alt + t -> duplica la pestaña en el mismo grupo
+; alt + d -> foco en visual studio 
+; alt + d (navegador) -> remarcador visual de texto
 
 ; Remapea Ctrl+D a Shift+F10 solo cuando la ventana activa pertenece a msedge.exe (Edge)
 
@@ -26,25 +30,32 @@
      || WinActive("ahk_exe chrome.exe") 
      || WinActive("ahk_exe firefox.exe") 
      || WinActive("ahk_exe brave.exe")
-^d::Send("+{F10}")
+     ^d::Send("+{F10}")
 #HotIf
 
 
-; Atajo condicional para Edge
-#HotIf WinActive("ahk_exe msedge.exe") ; funciona unicamente si se habre el "edge" 
-!t:: {  ; Alt+T solo en Edge
-    Send "^+k"  ; imita a  "Ctrl+Shift+K"
-    return
-}
-#HotIf  ; Restablece el contexto para otros hotkeys
 
-^!y:: {                       ; Ctrl+Alt+Y -> hotkey para super productivity (primero seleccionar tarea)
-    Send("{Ctrl down}{Shift down}x{Shift up}{Ctrl up}") ; Ctrl+Shift+X
-    Sleep(100)
-    Send("z")
-    Sleep(100)                                         ; y
-    Send("{Ctrl down}{Shift down}x{Shift up}{Ctrl up}") ; Ctrl+Shift+X
-}
+; ; Hotkey Ctrl+Alt+Y
+; ^!y::
+; {
+    ;     title := WinGetTitle("A")                     ; título de la ventana activa
+    ;     lower := StrLower(title)                      ; hacer todo minúscula para comparar
+    
+;     if InStr(lower, "super productivity")         ; si el título contiene "super productivity"
+;     {
+;         ; Secuencia para Super Productivity
+;         Send("z")
+;         Sleep(200)
+;         Send("{Ctrl down}{Shift down}x{Shift up}{Ctrl up}")
+;     }
+;     else
+;     {
+;         ; Secuencia para cualquier otra ventana
+;         Send("{Ctrl down}{Alt down}0{Alt up}{Ctrl up}")
+;     }
+;     return
+; }
+
 
 #+w::{
     Send("#{Up}")
@@ -57,6 +68,8 @@
 ^!f::{
     Send("{Click}")
 }
+
+; estos atajos de teclado los tengo en powertoys 
 
 ^n::{
     Send("{Down}")
@@ -74,6 +87,15 @@
     Send("{Right}")
 }
 
+^!g::{
+    Send("^{PgUp}")
+}
+
+^!h::{
+    Send("^{PgDn}")
+}
+
+
 !Space::{
     Send("^{Left}")
 }
@@ -82,13 +104,6 @@
     Send("^{Right}")
 }
 
-^!g::{
-    Send("^{PgUp}")
-}
-
-^!h::{
-    Send("^{PgDn}")
-}
 
 ^1::{
     Send("{PgUp}")
