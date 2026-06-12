@@ -71,29 +71,29 @@
 
 ; estos atajos de teclado los tengo en powertoys 
 
-^n::{
-    Send("{Down}")
-}
+; ^n::{
+;     Send("{Down}")
+; }
 
-^y::{
-    Send("{Up}")
-}
+; ^y::{
+;     Send("{Up}")
+; }
 
-^g::{
-    Send("{Left}")
-}
+; ^g::{
+;     Send("{Left}")
+; }
 
-^h::{
-    Send("{Right}")
-}
+; ^h::{
+;     Send("{Right}")
+; }
 
-^!g::{
-    Send("^{PgUp}")
-}
+; ^!g::{
+;     Send("^{PgUp}")
+; }
 
-^!h::{
-    Send("^{PgDn}")
-}
+; ^!h::{
+;     Send("^{PgDn}")
+; }
 
 
 !Space::{
