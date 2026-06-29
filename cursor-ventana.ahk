@@ -1,62 +1,55 @@
-; v1 
-; asfddaf
+#NoEnv
+#Persistent
+#SingleInstance force
 
-; Establecer el modo de coordenadas en pantalla para evitar discrepancias
+; Coordenadas en pantalla
 CoordMode, Mouse, Screen
 CoordMode, ToolTip, Screen
 
-#Persistent
-SetTimer, CheckActiveWindow, 50  ; Verifica cada 100 milisegundos
+; Variables globales
+last_id := ""
+muteStates := {}
+
+; Timer para centrar el cursor al cambiar de ventana activa
+SetTimer, CheckActiveWindow, 50
+
+; Fin de la sección automática
 return
 
-; el modificador (~) permite que el atajo no se bloquee y pueda tener su uso predeterminado.
-~LButton:: SetTimer, CheckActiveWindow, Off 
+; ========== Controles del timer (cursor-ventana) ==========
+~LButton:: SetTimer, CheckActiveWindow, Off
 ~RButton:: SetTimer, CheckActiveWindow, Off
-~!Tab:: SetTimer, CheckActiveWindow, On
-~LWin:: SetTimer, CheckActiveWindow, On
-~!F4:: SetTimer, CheckActiveWindow, On
+~!Tab::   SetTimer, CheckActiveWindow, On
+~LWin::   SetTimer, CheckActiveWindow, On
+~!F4::    SetTimer, CheckActiveWindow, On
 ~MButton:: SetTimer, CheckActiveWindow, Off
 
+; ========== Subrutina para centrar el cursor ==========
 CheckActiveWindow:
-    ; Obtener el identificador de la ventana activa
     WinGet, current_id, ID, A
-    if (current_id != last_id)
-    {
+    if (current_id != last_id) {
         last_id := current_id
-        ; Pequeño retardo para asegurar que la ventana se haya posicionado correctamente
         Sleep, 50
-        
-        ; Verificar que la ventana no esté minimizada (MinMax: -1 minimizada, 1 maximizada, 0 normal)
         WinGet, MinMax, MinMax, ahk_id %current_id%
-        if (MinMax = -1)
+        if (MinMax = -1)   ; minimizada → salir
             return
-        
-        ; Obtener la posición (X, Y) y el tamaño (Width, Height) de la ventana activa
         WinGetPos, X, Y, Width, Height, ahk_id %current_id%
-        
-        ; Solo proceder si se obtuvieron dimensiones válidas
-        if (Width > 0 && Height > 0)
-        {
-            ; Calcular el centro de la ventana
+        if (Width > 0 && Height > 0) {
             centerX := X + (Width / 2)
             centerY := Y + (Height / 2)
-            ; Mover el cursor al centro instantáneamente
             MouseMove, %centerX%, %centerY%, 0
         }
     }
 return
 
-
+; ========== Redefinición de Alt (evita menú) ==========
 Alt::
-    if ( GetKeyState("Ctrl","P") || GetKeyState("Shift","P") )
-    {
-        Send {Alt Down} 
+    if (GetKeyState("Ctrl","P") || GetKeyState("Shift","P")) {
+        Send {Alt Down}
         KeyWait, Alt
         Send {Alt Up}
         return
-    }
-    else
-    {
+    } else {
         KeyWait, Alt
         if (A_PriorKey = "Alt")
             Send {Blind}{vkFF}
@@ -64,41 +57,32 @@ Alt::
     }
 return
 
+; ========== Hotkey F8: silenciar/activar volumen de la app activa ==========
+F8::
+    WinGet, pid, PID, A
+    WinGet, processName, ProcessName, A
 
+    ; Detectar navegadores (por nombre de proceso)
+    if (processName = "chrome.exe" or processName = "msedge.exe") {
+        if (!muteStates.HasKey(processName))
+            muteStates[processName] := false
 
-#NoEnv
-#Persistent
-#SingleInstance force
+        muteStates[processName] := !muteStates[processName]
 
-muteStates := {}
+        if (muteStates[processName])
+            Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume %processName% 1
+        else
+            Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume %processName% 0
+    } else {
+        ; Resto de aplicaciones (por PID)
+        if (!muteStates.HasKey(pid))
+            muteStates[pid] := false
 
-F8:: 
-WinGet, pid, PID, A
-WinGet, processName, ProcessName, A
+        muteStates[pid] := !muteStates[pid]
 
-; detectar navegadores
-if (processName = "chrome.exe" or processName = "msedge.exe") {
-    
-    if (!muteStates.HasKey(processName))
-        muteStates[processName] := false
-
-    muteStates[processName] := !muteStates[processName]
-
-    if (muteStates[processName])
-        Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume %processName% 1
-    else
-        Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume %processName% 0
-
-} else {
-    ; comportamiento normal (PID)
-    if (!muteStates.HasKey(pid))
-        muteStates[pid] := false
-
-    muteStates[pid] := !muteStates[pid]
-
-    if (muteStates[pid])
-        Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume /%pid% 1
-    else
-        Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume /%pid% 0
-}
+        if (muteStates[pid])
+            Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume /%pid% 1
+        else
+            Run, C:\Users\vacam\Downloads\programas\nircmd-x64\nircmd.exe muteappvolume /%pid% 0
+    }
 return
