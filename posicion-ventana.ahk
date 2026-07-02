@@ -1,4 +1,3 @@
-
 #Requires AutoHotkey v2.0
 
 #+s:: {
@@ -38,5 +37,32 @@ MonitorDesdePunto(X, Y) {
             return A_Index
     }
     return 1
+}
+
+
+; Mapa de títulos de ventana → coordenadas de cliente (x, y)
+windowTargets := Map(
+    "oveja MEEEE vaca MUUUU",  {x: 952, y: 935},
+    "vaca MUUUU oveja MEEEE",  {x: 952, y: 935}
+)
+
+^!j:: {
+    activeTitle := WinGetTitle("A")
+    coords := windowTargets.Get(activeTitle, "")
+    if !coords
+        return
+
+    ; Guardar posición actual del cursor (coordenadas de pantalla)
+    CoordMode("Mouse", "Screen")
+    MouseGetPos(&origX, &origY)
+
+    ; Mover y hacer clic en las coordenadas de cliente de la ventana activa
+    CoordMode("Mouse", "Client")
+    MouseMove(coords.x, coords.y, 0)
+    Click()
+
+    ; Restaurar la posición original del cursor
+    CoordMode("Mouse", "Screen")
+    MouseMove(origX, origY, 0)
 }
 
